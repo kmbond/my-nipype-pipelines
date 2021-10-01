@@ -12,7 +12,8 @@ def create_first_level_spm_wf(bold_img,
                               confounders=None,
                               contrasts=None,
                               high_pass=None,
-                              fwhm=None):
+                              fwhm=None
+                              estimation_method='Bayesian'):
     """
     Parameters
     ----------
@@ -41,7 +42,9 @@ def create_first_level_spm_wf(bold_img,
         Rate (in secs) to high-pass filter the data. The default is None.
     fwhm : float, optional
         Smoothing applied to first-level estimations. The default is None.
-
+    estimation_method : str, optional
+        One of 'Bayesian', 'Bayesian2', or 'Classical'(see nipype documentation: https://nipype.readthedocs.io/en/latest/api/generated/nipype.interfaces.spm.model.html)
+        The default is 'Bayesian.'
     Returns
     -------
     Nipype worflow with the pipeline.
@@ -119,7 +122,7 @@ def create_first_level_spm_wf(bold_img,
 
     # TODO: The same as above regarding inputs
     estimate_model = pe.Node(
-        spm.model.EstimateModel(estimation_method={'Classical': 1},
+        spm.model.EstimateModel(estimation_method={'Bayesian': 1},
                                 write_residuals=False),
         name="estimate_model")
 
